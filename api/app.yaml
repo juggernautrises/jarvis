@@ -1,0 +1,9 @@
+runtime: python37
+
+
+env_variables:
+  GOOGLE_APPLICATION_CREDENTIALS: "key.json"
+
+handlers:
+- url: /.*
+  script: auto
