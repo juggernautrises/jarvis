@@ -30,12 +30,12 @@ def jarvis_main():
 
         if  request.form.get('instakill'):
             if request.form.get('instakill').lower() == "true":
-                instakill = True
+                db.collection('jarvis').document('ironjug_state').update({"instakill": True,"open":False, 'date_updated':datetime.datetime.now()})
             elif request.form.get('instakill').lower() == "false":
-                instakill = False
+                db.collection('jarvis').document('ironjug_state').update({"instakill": False, 'date_updated':datetime.datetime.now()})
+
             else:
                 return jsonify(return_dict)
-            db.collection('jarvis').document('ironjug_state').update({"instakill": instakill, 'date_updated':datetime.datetime.now()})
             return_dict['success'] = True
             
         if  request.form.get('open'):
