@@ -1,2 +1,4 @@
 key.json
 .DS_Store
+venv
+.idea
