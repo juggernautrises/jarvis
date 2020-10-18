@@ -3,8 +3,7 @@ import serial
 import requests
 import json
 
-s = serial.Serial('/dev/ttyACM0', 9600)  # port is 11 (for COM12), and baud rate is 9600
-time.sleep(2)  # wait for the Serial to initialize
+JARVIS_URL = ""
 
 
 def get_status(url):
@@ -19,16 +18,17 @@ def get_status(url):
 
 
 def app():
-    jarvis_url = "https://jarvis-ironjug.appspot.com/jarvis"
+    s = serial.Serial('/dev/ttyACM0', 9600)  # port is 11 (for COM12), and baud rate is 9600
+    time.sleep(2)  # wait for the Serial to initialize
     while True:
-        jarvis_status = get_status(jarvis_url)
-        open_status = int(jarvis_status.get("open"))
-        instakill_status = int(jarvis_status.get("instakill"))
-        arduino = 'o%si%s' % (open_status, instakill_status)
-        print(arduino)
-        s.write(str.encode(arduino))
-        time.sleep(3)
+        jarvis_status = get_status(JARVIS_URL)
+        if jarvis_status:
+            open_status = int(jarvis_status.get("open"))
+            instakill_status = int(jarvis_status.get("instakill"))
+            arduino = 'o%si%s' % (open_status, instakill_status)
+            s.write(str.encode(arduino))
+            time.sleep(3)
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app()
