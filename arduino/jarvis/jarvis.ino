@@ -31,32 +31,47 @@ boolean is_mask_open = false;
 boolean is_instakill_enabled = false;
 
 void ear_lights(boolean on=true){
-  if on{
-    //ear lights on
-  } else{
-    //ear lights off
+  int light_val = 0;
+  if (on){
+    light_val = 255;
   }
+  analogWrite(R_EAR_LIGHT, light_val);
+  analogWrite(L_EAR_LIGHT, light_val);
 }
 
 void mask_lights(boolean on=true, boolean armed=false){
+  int r_eye_blue_val = 0;
+  int l_eye_blue_val = 0;
+  int r_eye_red_val = 0;
+  int l_eye_red_val = 0;
   if (on){
     if (armed){
+        r_eye_red_val = 255;
+        l_eye_red_val = 255;
+    } else{
+        r_eye_blue_val = 255;
+        l_eye_blue_val = 255;
 
     }
   }
+  analogWrite(R_EYE_BLUE,r_eye_blue_val);
+  analogWrite(L_EYE_BLUE,l_eye_blue_val);
+  analogWrite(R_EYE_RED,r_eye_red_val);
+  analogWrite(L_EYE_RED,l_eye_red_val);
+
 }
 
 void open_mask(Servo *right_mask, Servo *left_mask, boolean open=true){
   if (open){
     for(int i=0; i<90; i++){
-      right_mask->write(90-i);
-      left_mask->write(90+i);
+      right_mask->write(90 - i);
+      left_mask->write(90 + i);
       delay(15);
     }
   } else{
     for(int i=0; i<90; i++){
       right_mask->write(i);
-      left_mask->write(180-i);
+      left_mask->write(180 - i);
       delay(15);
     }
   }
@@ -82,8 +97,13 @@ void rotate_ears(Servo *right_ear, Servo *left_ear, boolean ears_up=true){
 void setup() {
   
   Serial.begin(9600);
-  // pinMode(R_EYE_BLUE, OUTPUT);
-  // pinMode(R_EYE_RED, OUTPUT);
+  pinMode(R_EYE_BLUE, OUTPUT);
+  pinMode(R_EYE_RED, OUTPUT);
+  pinMode(R_EAR_LIGHT, OUTPUT);
+  pinMode(L_EYE_BLUE, OUTPUT);
+  pinMode(L_EYE_RED, OUTPUT);
+  pinMode(L_EAR_LIGHT, OUTPUT);
+
   R_MASK_SERVO.attach(R_MASK_SERVO_PIN);
   L_MASK_SERVO.attach(L_MASK_SERVO_PIN);
   
