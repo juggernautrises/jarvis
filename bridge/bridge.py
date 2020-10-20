@@ -1,7 +1,7 @@
-import time
-import serial
-import requests
 import json
+import requests
+import serial
+import time
 
 JARVIS_URL = ""
 
