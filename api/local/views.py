@@ -35,17 +35,6 @@ def app_main():
     return "Jarvis is active, sir."
 
 
-# Activating instakill:
-# Set open to false
-# instakill on
-
-# Opening
-# If instakill is active, deactivate
-# Set open to true
-
-# closing
-# If it's closed, close it
-
 @app.route("/jarvis/", methods=['GET', 'POST'])
 def jarvis_main():
     if request.method == 'GET':
