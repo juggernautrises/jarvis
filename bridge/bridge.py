@@ -20,21 +20,22 @@ def get_status(url):
 def get_serial():
     for i in range(0, 100):
         try:
-            s = serial.Serial('/dev/ttyACM' + str(i), 9600)
+            s = serial.Serial('/dev/cu.usbmodem21101', 9600)
+            print('Obtained serial')
             return s
         except serial.serialutil.SerialException:
             pass
 
 
 def app():
-    # s = serial.Serial('/dev/ttyACM2', 9600)  # port is 11 (for COM12), and baud rate is 9600
-    s = get_serial()
+    s = serial.Serial('/dev/cu.usbmodem21101', 9600)
     time.sleep(2)  # wait for the Serial to initialize
     while True:
         jarvis_status = get_status(JARVIS_URL)
         if jarvis_status:
-            open_status = int(jarvis_status.get("open"))
-            instakill_status = int(jarvis_status.get("instakill"))
+            print('Current Satus', jarvis_status)
+            open_status = int(jarvis_status.get('open'))
+            instakill_status = int(jarvis_status.get('instakill'))
             arduino = 'o%si%s' % (open_status, instakill_status)
             s.write(str.encode(arduino))
             time.sleep(1.5)

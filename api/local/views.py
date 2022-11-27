@@ -14,16 +14,18 @@ json_db_path = Path(__file__).absolute().parent / 'db.json'
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+
 def update_db(data):
-    with open(json_db_path , 'r') as f:
+    with open(json_db_path, 'r') as f:
         source_data = json.loads(f.read())
     source_data.update(data)
     with open(json_db_path, 'w') as f:
         f.write(json.dumps(source_data))
     return source_data
 
+
 def get_db_contents():
-    with open(json_db_path , 'r') as f:
+    with open(json_db_path, 'r') as f:
         data = json.loads(f.read())
     return data
 
@@ -31,6 +33,8 @@ def get_db_contents():
 @app.route("/", methods=['GET'])
 def app_main():
     return "Jarvis is active, sir."
+
+
 # Activating instakill:
 # Set open to false
 # instakill on
@@ -48,19 +52,7 @@ def jarvis_main():
         with open(json_db_path, 'r') as f:
             response = json.loads(f.read())
         return response
-    elif request.method == 'POST':
-        return_dict = {'success': False}
-        if 'open' not in request.json and 'instakill' not in request.json:
-            return jsonify(return_dict)
 
-        request_json = request.get_json()
-        instakill_state = request_json.get('instakill')
-        open_state = request_json.get('open')
-        if instakill_state:
-            return_dict.update(update_db({'instakill': True, 'open': False}))
-        else:
-            return_dict.update(update_db({'instakill': False, 'open': open_state}))
-        return return_dict
 
 @app.route("/jarvis/instakill", methods=['PATCH', 'GET'])
 def jarvis_instakill():
@@ -80,6 +72,7 @@ def jarvis_instakill():
             return_dict.update(update_db({'instakill': False}))
         return return_dict
 
+
 @app.route("/jarvis/open", methods=['PATCH', 'GET'])
 def jarvis_open():
     if request.method == 'GET':
@@ -97,6 +90,7 @@ def jarvis_open():
         else:
             return_dict.update(update_db({'open': open_state}))
         return return_dict
+
 
 if __name__ == '__main__':
     with open(json_db_path, 'w') as f:
